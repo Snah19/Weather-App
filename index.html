@@ -3,12 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aurora Weather</title>
-    <link rel="icon" href="./images/favicon.svg">
+    <title>weatherio</title>
+    <link rel="icon" href="./images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./style.css">
-    <script src="./script.js"></script>
+    <script type="module" src="./script.js" defer></script>
+    <script type="module" src="./route.js" defer></script>
 </head>
 <body>
+    <header class="header">
+        <div class="container">
+            <a class="logo" href="#">
+                <img src="./images/logo.png" width="364" height="58" alt="logo">
+            </a>
+
+            <div class="search__view">
+                <div class="search__wrapper">
+                    <input class="search__field" type="search" name="search" placeholder="Search city..." autocomplete="off">
+
+                    <svg class="m-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
+                        <path d="M456.69,421.39,362.6,327.3a173.81,173.81,0,0,0,34.84-104.58C397.44,126.38,319.06,48,222.72,48S48,126.38,48,222.72s78.38,174.72,174.72,174.72A173.81,173.81,0,0,0,327.3,362.6l94.09,94.09a25,25,0,0,0,35.3-35.3ZM97.92,222.72a124.8,124.8,0,1,1,124.8,124.8A124.95,124.95,0,0,1,97.92,222.72Z"/>
+                    </svg>
+
+                    <button class="back__button icon-btn leading-icon has-state">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512">
+                            <polyline points="244 400 100 256 244 112" style="fill:none;stroke: var(--white);stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"/>
+                            <line x1="120" y1="256" x2="412" y2="256" style="fill:none;stroke:var(--white);stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="search__result">
+                    <ul class="view__list">
+                        <li class="view__item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
+                                <circle cx="256" cy="192" r="32"/>
+                                <path d="M256,32C167.78,32,96,100.65,96,185c0,40.17,18.31,93.59,54.42,158.78,29,52.34,62.55,99.67,80,123.22a31.75,31.75,0,0,0,51.22,0c17.42-23.55,51-70.88,80-123.22C397.69,278.61,416,225.19,416,185,416,100.65,344.22,32,256,32Zm0,224a64,64,0,1,1,64-64A64.07,64.07,0,0,1,256,256Z"/>
+                            </svg>
     
+                            <div>
+                                <p class="item__title">London</p>
+                                <p class="item__subtitle label-2">State of London, GB</p>
+                            </div>
+    
+                            <a href="" class="item__link has-state"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="header__actions">
+                <button class="search__button icon-btn has-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
+                        <path d="M456.69,421.39,362.6,327.3a173.81,173.81,0,0,0,34.84-104.58C397.44,126.38,319.06,48,222.72,48S48,126.38,48,222.72s78.38,174.72,174.72,174.72A173.81,173.81,0,0,0,327.3,362.6l94.09,94.09a25,25,0,0,0,35.3-35.3ZM97.92,222.72a124.8,124.8,0,1,1,124.8,124.8A124.95,124.95,0,0,1,97.92,222.72Z"/>
+                    </svg>
+                </button>
+    
+                <a class="btn-primary has-state" href="#/current-location">
+                    <svg width="22" height="22" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <title>ic_fluent_my_location_24_regular</title>
+                        <desc>Created with Sketch.</desc>
+                        <g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="" fill-rule="evenodd">
+                          <g id="ic_fluent_my_location_24_regular" fill="#212121" fill-rule="nonzero">
+                            <path d="M12,2 C12.3796958,2 12.693491,2.28215388 12.7431534,2.64822944 L12.75,2.75 L12.7490685,4.53770881 L12.7490685,4.53770881 C16.292814,4.88757432 19.1124257,7.70718602 19.4632195,11.2525316 L19.5,11.25 L21.25,11.25 C21.6642136,11.25 22,11.5857864 22,12 C22,12.3796958 21.7178461,12.693491 21.3517706,12.7431534 L21.25,12.75 L19.4616558,12.7490368 L19.4616558,12.7490368 C19.1124257,16.292814 16.292814,19.1124257 12.7474684,19.4632195 L12.75,19.5 L12.75,21.25 C12.75,21.6642136 12.4142136,22 12,22 C11.6203042,22 11.306509,21.7178461 11.2568466,21.3517706 L11.25,21.25 L11.2509632,19.4616558 L11.2509632,19.4616558 C7.70718602,19.1124257 4.88757432,16.292814 4.53678051,12.7474684 L4.5,12.75 L2.75,12.75 C2.33578644,12.75 2,12.4142136 2,12 C2,11.6203042 2.28215388,11.306509 2.64822944,11.2568466 L2.75,11.25 L4.53770881,11.2509315 L4.53770881,11.2509315 C4.88757432,7.70718602 7.70718602,4.88757432 11.2525316,4.53678051 L11.25,4.5 L11.25,2.75 C11.25,2.33578644 11.5857864,2 12,2 Z M12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 Z M12,8 C14.209139,8 16,9.790861 16,12 C16,14.209139 14.209139,16 12,16 C9.790861,16 8,14.209139 8,12 C8,9.790861 9.790861,8 12,8 Z" id="🎨-Color" >
+                            </path>
+                          </g>
+                        </g>
+                    </svg>
+                    <span class="span">Current Location</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
 </body>
 </html>
