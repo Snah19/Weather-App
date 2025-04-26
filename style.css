@@ -80,6 +80,16 @@
         scrollbar-color: var(--white-alpha-8) transparent; /* thumb track */
     }
 
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--white-alpha-8);
+        border-radius: 500px;
+    }
+
     ul {
         list-style: none;
     }
@@ -149,16 +159,6 @@
 
     ::selection {
         background: var(--white-alpha-8);
-    }
-
-    ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: var(--white-alpha-8);
-        border-radius: 500px;
     }
 }
 
@@ -263,6 +263,64 @@
     .btn-primary[disbaled]::before {
         display: none;
     }
+
+    .card {
+        background: var(--surface);
+        color: var(--on-surface);
+    }
+
+    .card-lg {
+        border-radius: 28px;
+        padding: 20px;
+    }
+
+    .card-sm {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .heading {
+        color: var(--white);
+        font-size: var(--heading);
+        line-height: 1.1;
+    }
+
+    .title-1 {
+        font-size: var(--title-1);
+    }
+
+    .title-2 {
+        font-size: var(--title-2);
+        margin-block-end: 12px;
+    }
+
+    .title-3 {
+        font-size: var(--title-3);
+        font-weight: 600;
+    }
+
+    .body-1 {
+        font-size: var(--body-1);
+    }
+
+    .body-2 {
+        font-size: var(--body-2);
+        font-weight: 600;
+    }
+
+    .body-3 {
+        font-size: var(--body-3);
+    }
+
+    .label-1 {
+        font-size: var(--label-1);
+    }
+
+    .label-1 {
+        font-size: var(--label-2);
+    }
+
+
 }
 
 @layer header {
@@ -361,7 +419,7 @@
         transform: translateX(-50%) translateY(-50%);
     }
 
-    .search__wrapper > .m-icon {
+    .search__wrapper > .search-icon {
         display: none;
     }
 
@@ -384,7 +442,7 @@
         padding-inline: 16px 24px;
     }
 
-    .search__view .view__item :is(.m-icon, .item__subtitle) {
+    .search__view .view__item :is(.search-icon, .item__subtitle) {
         color: var(--on-surface-variant);
     }
 
@@ -393,4 +451,58 @@
         inset: 0;
         box-shadow: none;
     }
+
+    .calendar-icon path {
+        fill: var(--white);
+    }
+
+
 }
+
+@layer main {
+    main {
+        height: calc(100vh - 80px);
+        height: calc(100svh - 80px); /*for mobile browser*/
+        overflow: hidden;
+    }
+
+    article.container {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        height: 100%;
+        overflow-y: auto; /* FOR FIREFOX */
+        overflow-y: overlay;
+    }
+
+    article.container::before {
+        content: "";
+
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 40px;
+        background: var(--gradient-1);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .section:not(:last-child) {
+        margin-block-end: 16px;
+    }
+
+    article.container::-webkit-scrollbar-thumb {
+        background: transparent;
+    }
+
+    article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
+        background: var(--white-alpha-8);
+    }
+
+    article.container::-webkit-scrollbar-button {
+        height: 10px;
+    }
+
+}
+

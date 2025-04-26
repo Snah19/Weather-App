@@ -10,6 +10,7 @@
     <script type="module" src="./route.js" defer></script>
 </head>
 <body>
+
     <header class="header">
         <div class="container">
             <a class="logo" href="#">
@@ -20,7 +21,7 @@
                 <div class="search__wrapper">
                     <input class="search__field" type="search" name="search" placeholder="Search city..." autocomplete="off">
 
-                    <svg class="m-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
                         <path d="M456.69,421.39,362.6,327.3a173.81,173.81,0,0,0,34.84-104.58C397.44,126.38,319.06,48,222.72,48S48,126.38,48,222.72s78.38,174.72,174.72,174.72A173.81,173.81,0,0,0,327.3,362.6l94.09,94.09a25,25,0,0,0,35.3-35.3ZM97.92,222.72a124.8,124.8,0,1,1,124.8,124.8A124.95,124.95,0,0,1,97.92,222.72Z"/>
                     </svg>
 
@@ -35,7 +36,7 @@
                 <div class="search__result">
                     <ul class="view__list">
                         <li class="view__item">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
+                            <svg class="location-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
                                 <circle cx="256" cy="192" r="32"/>
                                 <path d="M256,32C167.78,32,96,100.65,96,185c0,40.17,18.31,93.59,54.42,158.78,29,52.34,62.55,99.67,80,123.22a31.75,31.75,0,0,0,51.22,0c17.42-23.55,51-70.88,80-123.22C397.69,278.61,416,225.19,416,185,416,100.65,344.22,32,256,32Zm0,224a64,64,0,1,1,64-64A64.07,64.07,0,0,1,256,256Z"/>
                             </svg>
@@ -75,5 +76,39 @@
 
         </div>
     </header>
+
+    <main>
+        <article class="container">
+            <div class="content__left">
+                <section class="section current__weather" aria-label="current weather">
+                    <div class="card card-lg current-weather-card">
+                        <h2 class="title-2 card-title">Now</h2>
+                        <div class="wrapper">
+                            <p class="heading">25&deg;<sub>c</sub></p>
+                            <img class="weather__icon" src="./images/weather_icons/01d.png" width="64" height="64" alt="Overcast Clouds">
+                        </div>
+                        <p class="body-3">Overcast Clouds</p>
+
+                        <ul class="meta-list">
+                            <li class="meta-item">
+                                <svg class="calendar-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512">
+                                    <path d="M480,128a64,64,0,0,0-64-64H400V48.45c0-8.61-6.62-16-15.23-16.43A16,16,0,0,0,368,48V64H144V48.45c0-8.61-6.62-16-15.23-16.43A16,16,0,0,0,112,48V64H96a64,64,0,0,0-64,64v12a4,4,0,0,0,4,4H476a4,4,0,0,0,4-4Z"/>
+                                    <path d="M32,416a64,64,0,0,0,64,64H416a64,64,0,0,0,64-64V179a3,3,0,0,0-3-3H35a3,3,0,0,0-3,3ZM376,208a24,24,0,1,1-24,24A24,24,0,0,1,376,208Zm0,80a24,24,0,1,1-24,24A24,24,0,0,1,376,288Zm-80-80a24,24,0,1,1-24,24A24,24,0,0,1,296,208Zm0,80a24,24,0,1,1-24,24A24,24,0,0,1,296,288Zm0,80a24,24,0,1,1-24,24A24,24,0,0,1,296,368Zm-80-80a24,24,0,1,1-24,24A24,24,0,0,1,216,288Zm0,80a24,24,0,1,1-24,24A24,24,0,0,1,216,368Zm-80-80a24,24,0,1,1-24,24A24,24,0,0,1,136,288Zm0,80a24,24,0,1,1-24,24A24,24,0,0,1,136,368Z"/>
+                                </svg>
+                                <p class="title-3 meta-text">Thursday 16, Feb</p>
+                            </li>
+                            <li>
+                                <svg class="location-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
+                                    <circle cx="256" cy="192" r="32"/>
+                                    <path d="M256,32C167.78,32,96,100.65,96,185c0,40.17,18.31,93.59,54.42,158.78,29,52.34,62.55,99.67,80,123.22a31.75,31.75,0,0,0,51.22,0c17.42-23.55,51-70.88,80-123.22C397.69,278.61,416,225.19,416,185,416,100.65,344.22,32,256,32Zm0,224a64,64,0,1,1,64-64A64.07,64.07,0,0,1,256,256Z"/>
+                                </svg>
+                                <p class="title-3 meta-text">London, GB</p>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </main>
 </body>
 </html>
