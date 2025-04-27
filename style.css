@@ -18,7 +18,6 @@
     }
 }
 
-
 @layer global {
     :root {
         /* COLORS */
@@ -481,6 +480,7 @@
 
         position: fixed;
         bottom: 0;
+        left: 0;
         width: 100%;
         height: 40px;
         background: var(--gradient-1);
@@ -603,4 +603,162 @@
     .svg__thermostat path {
         fill: var(--white);
     }
+
+
+    .highlight-list {
+        display: grid;
+        gap: 20px;
+    }
+
+    .highlight-list .title-3 {
+        color: var(--on-surface-variant);
+        margin-block-end: 20px;
+    }
+
+    .highlights .card-sm {
+        position: relative;
+        background: var(--black-alpha-10);
+    }
+
+    .highlight-card :is(.wrapper, .card-list, .card-item) {
+        display: flex;
+        align-items: center;
+    }
+
+    .highlight-card .title-2 {
+        margin-block-end: 0;
+    }
+
+    .highlight-card .wrapper {
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .highlight-card .card-list {
+        flex-wrap: wrap;
+        flex-grow: 1;
+        row-gap: 8px;
+    }
+
+    .highlight-card .card-item {
+        width: 50%;
+        justify-content: end;
+        gap: 4px;
+    }
+
+    .highlight-card .label-1 {
+        color: var(--on-surface-variant);
+    }
+
+    .badge {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        padding: 2px 12px;
+        border-radius: 500px;
+        font-weight: 600;
+        cursor: help;
+    }
+
+    .badge.aqi-1 {
+        background: var(--bg-aqi-1);
+        color: var(--on-bg-aqi-1);
+    }
+
+    .badge.aqi-2 {
+        background: var(--bg-aqi-2);
+        color: var(--on-bg-aqi-2);
+    }
+
+    .badge.aqi-3 {
+        background: var(--bg-aqi-3);
+        color: var(--on-bg-aqi-3);
+    }
+
+    .badge.aqi-4 {
+        background: var(--bg-aqi-4);
+        color: var(--on-bg-aqi-4);
+    }
+
+    .badge.aqi-5 {
+        background: var(--bg-aqi-5);
+        color: var(--on-bg-aqi-5);
+    }
+
+    .highlight-card.two .card-item {
+        justify-content: start;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+    }
+
+    .highlight-card.two ,.label-1 {
+        margin-block-end: 4px;
+    }
+}
+
+@layer hourly__forecast {
+    .slider__container {
+        overflow-x: auto;
+        margin-inline: -16px;
+    }
+
+    .slider__container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .slider__list {
+        display: flex;
+        gap: 12px;
+    }
+
+    .slider__list:first-child {
+        margin-block-end: 16px;
+    }
+
+    .slider__list::before,
+    .slider__list::after {
+        content: "";
+        min-width: 4px;
+    }
+
+    .slider__item {
+        min-width: 110px;
+        flex: 1 1 100%;
+    }
+
+    .slider__card {
+        text-align: center;
+    }
+
+    .slider__item .weather__icon {
+        margin-inline: auto;
+    }
+}
+
+@layer footer {
+    .footer,
+    .footer .body-3:last-child {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .footer {
+        display: none;
+        color: var(--on-surface-variant);
+        text-align: center;
+        gap: 12 24px;
+        margin-block-start: 28px;
+    }
+
+    .fade-in .footer {
+        display: flex;
+    }
+
+    .footer .body-3:last-child {
+        gap: 6px;
+    }
+
+    
 }
