@@ -506,3 +506,72 @@
 
 }
 
+@layer current__weather {
+    .current-weather-card .wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-block: 12px;
+    }
+
+    .current-weather-card .weather__icon {
+        margin-inline: auto;
+    }
+
+    .current-weather-card > .body-3 {
+        text-transform: capitalize;
+    }
+
+    .current-weather-card .meta-list {
+        margin-block-start: 16px;
+        padding-block-start: 16px;
+        border-block-start: 1px solid var(--outline);
+    }
+
+    .current-weather-card .meta-item {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .current-weather-card .meta-item:not(:last-child) {
+        margin-block-end: 12px;
+    }
+
+    .current-weather-card .meta-text {
+        color: var(--on-surface-variant);
+    }
+
+}
+
+@layer five__day__forecast {
+    .forecast__card .title-2 {
+        margin-block-end: 0;
+    }
+
+    .forecast__card :is(.card-item, .icon__wrapper) {
+        display: flex;
+        align-items: center;
+    }
+
+    .forecast__card .card-item:not(:last-child) {
+        margin-block-end: 12px;
+    }
+
+    .forecast__card .icon__wrapper {
+        gap: 8px;
+    }
+
+    .forecast__card .label-1 {
+        color: var(--on-surface-variant);
+        font-weight: 600;
+    }
+
+    .forecast__card .card-item > .label-1 {
+        width: 100%;
+        text-align: right;
+    }
+
+
+}
+
