@@ -575,3 +575,32 @@
 
 }
 
+@layer highlights {
+    .wind__icon path {
+        stroke: var(--white);
+    }
+
+    .svg__sunny path {
+        fill: var(--white);
+    }
+
+    .svg__moon path {
+        fill: var(--white);
+    }
+
+    .svg__water path {
+        fill: var(--white);
+    }
+
+    .svg__air path {
+        fill: var(--white);
+    }
+
+    .svg__eye path {
+        fill: var(--white);
+    }
+
+    .svg__thermostat path {
+        fill: var(--white);
+    }
+}
