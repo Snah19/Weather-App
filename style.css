@@ -759,6 +759,29 @@
     .footer .body-3:last-child {
         gap: 6px;
     }
+}
 
-    
+@layer loading {
+    .loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        background: var(--background);
+        z-index: 1;
+    }
+
+    .loading::before {
+        content: "";
+
+        width: 48px;
+        height: 48px;
+        border: 4px solid var(--on-background);
+        border-block-start-color: transparent;
+        border-radius: 50%;
+        animation: loading 500ms linear infinite;
+    }
 }
