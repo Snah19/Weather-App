@@ -6,7 +6,7 @@
     <title>weatherio</title>
     <link rel="icon" href="./images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./style.css">
-    <script type="module" src="./script.js" defer></script>
+    <script type="module" src="./app.js" defer></script>
     <script type="module" src="./route.js" defer></script>
 </head>
 <body>
@@ -17,15 +17,15 @@
                 <img src="./images/logo.png" width="364" height="58" alt="logo">
             </a>
 
-            <div class="search__view">
+            <div class="search__view is-active">
                 <div class="search__wrapper">
                     <input class="search__field" type="search" name="search" placeholder="Search city..." autocomplete="off">
 
-                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
+                    <svg class="search-icon leading-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
                         <path d="M456.69,421.39,362.6,327.3a173.81,173.81,0,0,0,34.84-104.58C397.44,126.38,319.06,48,222.72,48S48,126.38,48,222.72s78.38,174.72,174.72,174.72A173.81,173.81,0,0,0,327.3,362.6l94.09,94.09a25,25,0,0,0,35.3-35.3ZM97.92,222.72a124.8,124.8,0,1,1,124.8,124.8A124.95,124.95,0,0,1,97.92,222.72Z"/>
                     </svg>
 
-                    <button class="back__button icon-btn leading-icon has-state">
+                    <button class="back__button icon-btn leading-icon has-state search-toggler" aria-level="close search">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512">
                             <polyline points="244 400 100 256 244 112" style="fill:none;stroke: var(--white);stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"/>
                             <line x1="120" y1="256" x2="412" y2="256" style="fill:none;stroke:var(--white);stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"/>
@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="search__result">
-                    <ul class="view__list">
+                    <!-- <ul class="view__list">
                         <li class="view__item">
                             <svg class="location-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
                                 <circle cx="256" cy="192" r="32"/>
@@ -48,19 +48,19 @@
     
                             <a href="" class="item__link has-state"></a>
                         </li>
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
 
             <div class="header__actions">
-                <button class="search__button icon-btn has-state">
+                <button class="search__button icon-btn has-state search-toggler">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" style="fill: var(--white);">
                         <path d="M456.69,421.39,362.6,327.3a173.81,173.81,0,0,0,34.84-104.58C397.44,126.38,319.06,48,222.72,48S48,126.38,48,222.72s78.38,174.72,174.72,174.72A173.81,173.81,0,0,0,327.3,362.6l94.09,94.09a25,25,0,0,0,35.3-35.3ZM97.92,222.72a124.8,124.8,0,1,1,124.8,124.8A124.95,124.95,0,0,1,97.92,222.72Z"/>
                     </svg>
                 </button>
     
-                <a class="btn-primary has-state" href="#/current-location">
-                    <svg width="22" height="22" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <a class="btn-primary has-state" href="#/current-location" data-current-location-btn="">
+                    <svg class="svg__location" width="22" height="22" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                         <title>ic_fluent_my_location_24_regular</title>
                         <desc>Created with Sketch.</desc>
                         <g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="" fill-rule="evenodd">
@@ -81,12 +81,14 @@
         <article class="container">
             <div class="content__left">
                 <section class="section current__weather" aria-label="current weather">
-                    <div class="card card-lg current-weather-card">
+                    <!-- <div class="card card-lg current-weather-card">
                         <h2 class="title-2 card-title">Now</h2>
+
                         <div class="wrapper">
                             <p class="heading">25&deg;<sub>c</sub></p>
                             <img class="weather__icon" src="./images/weather_icons/01d.png" width="64" height="64" alt="Overcast Clouds">
                         </div>
+
                         <p class="body-3">Overcast Clouds</p>
 
                         <ul class="meta-list">
@@ -105,11 +107,11 @@
                                 <p class="title-3 meta-text">London, GB</p>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
                 </section>
 
-                <section class="section forecast" aria-labelledby="forecast">
-                    <h2 class="title-2" id="forecast-label">5 Day Forecast</h2>
+                <section class="section forecast five__day__forecast" aria-labelledby="forecast">
+                    <!-- <h2 class="title-2" id="forecast-label">5 Day Forecast</h2>
                     <div class="forecast__card card card-lg">
                         <ul>
                             <li class="card-item">
@@ -160,7 +162,6 @@
                                 <p class="label-1">Friday</p>
                             </li>
 
-
                             <li class="card-item">
                                 <div class="icon__wrapper">
                                     <img class="weather__icon" src="./images/weather_icons/01n.png" alt="Overcast Clouds" width="36" height="36">
@@ -173,13 +174,13 @@
                                 <p class="label-1">Friday</p>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
                 </section>
             </div>
 
             <div class="content__right">
                 <section class="section highlights" aria-labelledby="highlights-label">
-                    <div class="card card-lg">
+                    <!-- <div class="card card-lg">
                         <h2 class="title-2" id="highlights-label">Today Highlights</h2>
                         <div class="highlight-list">
                             <div class="card card-sm highlight-card one">
@@ -211,7 +212,7 @@
                                     </ul>
                                 </div>
 
-                                <span class="badge aqi-5 label-1" title="aqi message">
+                                <span class="badge aqi-1 label-1" title="aqi message">
                                     Good
                                 </span>
                             </div>
@@ -299,12 +300,12 @@
                                 </div>                                
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
                 </section>
 
                 <section class="section hourly__forecast" aria-label="hourly forecast">
-                    <h2 class="title-2">Today at</h2>
+                    <!-- <h2 class="title-2">Today at</h2>
 
                     <div class="slider__container">
                         <ul class="slider__list" data-temp>
@@ -426,7 +427,7 @@
                         </ul>
 
 
-                    </div>
+                    </div> -->
                 </section>
 
                 <footer class="footer">
@@ -444,5 +445,15 @@
             </div>
         </article>
     </main>
+
+    <section class="error__content">
+        <h2 class="heading">404</h2>
+        <p class="body-1">Page not found!</p>
+
+        <a class="btn-primary" href="#/weather?lat=51.5073219&lon=-0.1276474">
+            <span class="span">Go Home</span>
+        </a>
+    </section>
+
 </body>
 </html>
