@@ -583,10 +583,12 @@
         background: var(--surface);
         color: var(--on-surface);
         margin-inline: auto;
+        margin-block-end: 16px;
 
         padding: 20px;
         @media (width >= calc(768 / 16 * 1rem)) {
             padding: 24px;
+            margin-block-end: 20px;
         }
 
         @media (width >= calc(1200 / 16 * 1rem)) {
@@ -594,9 +596,10 @@
         }
     }
 
-    .current__weather__title {
+    .current__weather__heading {
         font-size: calc(20 / 16 * 1rem);
         margin-block-end: 12px;
+        color: var(--on-surface);
     }
 
     .current__weather {
@@ -699,17 +702,29 @@
         padding: 20px;
         border-radius: 28px;
         background: var(--surface);
+        margin-block-end: 16px;
+    }
+
+    .today__highlights__card svg {
+        @media (width >= calc(768 / 16 * 1rem)) {
+            width: 36px;
+            height: 36px;
+        }
     }
 
     .highlights__heading {
         margin-block-end: 12px;
         font-size: calc(20 / 16 * 1rem);
+        color: var(--on-surface);
     }
 
     .today__highlight__list {
-        display: flex;
-        flex-direction: column;
-        row-gap: 20px;
+        display: grid;
+        gap: 20px;
+
+        @media (width >= calc(768 / 16 * 1rem)) {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
 
     .today__highlight__list__item {
@@ -723,6 +738,18 @@
         margin-block-end: 20px;
         font-size: calc(18 / 16 * 1rem);
         color: var(--on-surface-variant);
+
+        @media (width >= calc(20 / 16 * 1rem)) {
+            font-size: calc(20 / 16 * 1rem);
+        }
+    }
+
+    .today__highlight__list__item p {
+        font-size: calc(20 / 16 * 1rem);
+    }
+
+    .air__quality__card {
+        grid-column-start: 1; grid-column-end: -1;
     }
 
     .air__quality__badge {
@@ -772,10 +799,7 @@
         flex-grow: 1;
         flex-wrap: wrap;
         row-gap: 8px;
-    }
-
-    .air__quality__card {
-        height: 138px;
+        
     }
 
     .air__quality__list__item {
@@ -783,6 +807,13 @@
         justify-content: end;
         column-gap: 4px;
         width: 50%;
+
+        @media (width >= calc(768 / 16 * 1rem)) {
+            flex-direction: column-reverse;
+            row-gap: 8px;
+            width: 25%;
+            align-items: center;
+        }
     }
 
     .air__quality__list__item p {
@@ -795,7 +826,7 @@
     }
 
     .sunrise__and__sunset__card {
-        height: 164px;
+        grid-column-start: 1; grid-column-end: -1;
     }
 
     .sunrise__and__sunset__heading {
@@ -889,7 +920,7 @@
         margin-block-end: 12px;
     }
 
-    .temperature__list__item .hour {
+    .hour {
         margin-block-end: 5px;
     }
 
@@ -901,7 +932,7 @@
 
     .temperature__card,
     .wind__card {
-        width: 110px;
-        height: 139px;
+        max-width: 200px;
+        width: 100%;
     }
 }

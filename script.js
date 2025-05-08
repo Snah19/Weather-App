@@ -271,7 +271,7 @@ export async function renderCurrentWeather() {
 
     const currentWeatherCard = document.querySelector(".current__weather__card");
     currentWeatherCard.innerHTML = `
-<p class="current__weather__title">Now</p>
+<h2 class="current__weather__heading">Now</h2>
 <div class="current__weather">
     <h2 class="current__temperature__headline">${Math.round(temp)}&deg;<sub>c</sub></h2>
     <img class="current__weather__image" src="./images/weather_icons/${icon}.png" alt="" width="60" height="60">
@@ -395,16 +395,20 @@ async function generateAirQualityIndex() {
     </svg>
     <ul class="air__quality__list">
         <li class="air__quality__list__item">
-            <p>${pm2_5}&nbsp;<span>PM<sub>2.5</sub></span></p>
+            <p>${pm2_5}&nbsp;</p>
+            <span>PM<sub>2.5</sub></span>
         </li>
         <li class="air__quality__list__item">
-            <p>${so2}&nbsp;<span>SO<sub>2</sub></span></p>
+            <p>${so2}&nbsp;</p>
+            <span>SO<sub>2</sub></span>
         </li>
         <li class="air__quality__list__item">
-            <p>${no2}&nbsp;<span>NO<sub>2</sub></span></p>
+            <p>${no2}&nbsp;</p>
+            <span>NO<sub>2</sub></span>
         </li>
         <li class="air__quality__list__item">
-            <p>${o3}&nbsp;<span>O<sub>3</sub></span></p>
+            <p>${o3}&nbsp;</p>
+            <span>O<sub>3</sub></span>
         </li>
     </ul>
 </div>
@@ -617,7 +621,7 @@ async function getWindSpeedCardsHTML() {
         const {deg} = wind;
 
         windSpeedCardsHTML += `
-<li class="wind__list__item windspeed__card">
+<li class="wind__list__item wind__card">
     <p class="hour">${getHourFromDateTime(dt_txt)}</p>
     <img class="weather__icon" src="./images/weather_icons/direction.png" width="48" height="48" alt="" style="transform: rotate(${deg - 180}deg);">
     <p class="wind__speed">15 km/h</p>
