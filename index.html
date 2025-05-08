@@ -4,8 +4,197 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>weatherio</title>
+    <link rel="icon" href="./images/favicon.svg">
+    <link rel="stylesheet" href="./style.css">
+
+    <script type="module" src="./script.js" defer></script>
 </head>
 <body>
     
+    <div class="container">
+
+        <!-- position: relative -->
+        <header class="header">
+
+            <a class="header__left logo" href="">
+                <img src="./images/logo.png" alt="weatherio logo" width="150" />
+            </a>
+
+            <!-- position: fixed -->
+            <div class="search__view">
+
+                <!-- position: relative -->
+                <div class="search__field__container">
+
+                    <input class="search__field" type="search" name="search" placeholder="Search city (e.g., Phnom Penh)..." autocomplete="off">
+
+                    <!-- position: absolute -->
+                    <svg class="svg__search" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" >
+                        <path fill="var(--white)" d="M456.69,421.39,362.6,327.3a173.81,173.81,0,0,0,34.84-104.58C397.44,126.38,319.06,48,222.72,48S48,126.38,48,222.72s78.38,174.72,174.72,174.72A173.81,173.81,0,0,0,327.3,362.6l94.09,94.09a25,25,0,0,0,35.3-35.3ZM97.92,222.72a124.8,124.8,0,1,1,124.8,124.8A124.95,124.95,0,0,1,97.92,222.72Z"/>
+                    </svg>
+
+                    <!-- position: absolute -->
+                    <button class="btn__back ripple-effect">
+                        <svg class="svg__back" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512">
+                            <polyline points="244 400 100 256 244 112" style="fill:none;stroke: var(--white);stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"/>
+                            <line x1="120" y1="256" x2="412" y2="256" style="fill:none;stroke:var(--white);stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"/>
+                        </svg>
+                    </button>
+
+                    <!-- position: absolute; -->
+                    <div class="loading__spinner is-invisible">
+                    </div>
+
+                </div>
+
+                <ul class="search__result__list is-invisible">
+                    <!-- generateSearchedLocations(); -->
+                </ul>
+            </div>
+
+            <div class="header__right">
+                <button class="btn__search ripple-effect">
+                    <svg class="svg__search" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" >
+                        <path fill="var(--white)" d="M456.69,421.39,362.6,327.3a173.81,173.81,0,0,0,34.84-104.58C397.44,126.38,319.06,48,222.72,48S48,126.38,48,222.72s78.38,174.72,174.72,174.72A173.81,173.81,0,0,0,327.3,362.6l94.09,94.09a25,25,0,0,0,35.3-35.3ZM97.92,222.72a124.8,124.8,0,1,1,124.8,124.8A124.95,124.95,0,0,1,97.92,222.72Z"/>
+                    </svg> 
+                </button>
+                <button class="btn__current__location">
+                    <svg class="svg__locate" width="20" height="20" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                        <path d="M12,2 C12.3796958,2 12.693491,2.28215388 12.7431534,2.64822944 L12.75,2.75 L12.7490685,4.53770881 L12.7490685,4.53770881 C16.292814,4.88757432 19.1124257,7.70718602 19.4632195,11.2525316 L19.5,11.25 L21.25,11.25 C21.6642136,11.25 22,11.5857864 22,12 C22,12.3796958 21.7178461,12.693491 21.3517706,12.7431534 L21.25,12.75 L19.4616558,12.7490368 L19.4616558,12.7490368 C19.1124257,16.292814 16.292814,19.1124257 12.7474684,19.4632195 L12.75,19.5 L12.75,21.25 C12.75,21.6642136 12.4142136,22 12,22 C11.6203042,22 11.306509,21.7178461 11.2568466,21.3517706 L11.25,21.25 L11.2509632,19.4616558 L11.2509632,19.4616558 C7.70718602,19.1124257 4.88757432,16.292814 4.53678051,12.7474684 L4.5,12.75 L2.75,12.75 C2.33578644,12.75 2,12.4142136 2,12 C2,11.6203042 2.28215388,11.306509 2.64822944,11.2568466 L2.75,11.25 L4.53770881,11.2509315 L4.53770881,11.2509315 C4.88757432,7.70718602 7.70718602,4.88757432 11.2525316,4.53678051 L11.25,4.5 L11.25,2.75 C11.25,2.33578644 11.5857864,2 12,2 Z M12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 Z M12,8 C14.209139,8 16,9.790861 16,12 C16,14.209139 14.209139,16 12,16 C9.790861,16 8,14.209139 8,12 C8,9.790861 9.790861,8 12,8 Z">
+                        </path>
+
+                    </svg>
+                    <span class="span__current__location">Current Location</span>
+                </button>
+            </div>
+
+
+        </header>
+
+        <main class="main">
+            <div class="main__wrapper">
+                <div class="content__left">
+                    <div class="current__weather__card">
+                        <!-- script.js: generateCurrentWeather(lat, lon) -->
+                    </div>
+    
+                    <div class="five__day__forecast">
+                        <h2 class="five__day__forecast__heading">5 Day Forecast</h2>
+                        <div class="five__day__forecast__card">
+                            <ul class="five__day__forecast__list">
+                                <!-- script.js: generateFiveDayForecastList() -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="content__right">
+                    <div class="today__highlights__card">
+                        <h2 class="highlights__heading">Today Highlights</h2>
+                        <ul class="today__highlight__list">
+                            <li class="today__highlight__list__item air__quality__card">
+                                <!-- script.js: generateAirQualityCard() -->
+                            </li>
+    
+                            <li class="today__highlight__list__item sunrise__and__sunset__card">
+                                <!-- script.js: generateSunriseAndSunsetCard() -->
+                            </li>
+    
+                            <li class="today__highlight__list__item humidity__card">
+    
+                            </li>
+    
+                            <li class="today__highlight__list__item pressure__card">
+    
+                            </li>
+    
+                            <li class="today__highlight__list__item visibility__card">
+    
+                            </li>
+    
+                            <li class="today__highlight__list__item feels__like__card">
+    
+                            </li>
+    
+                        </ul>
+                    </div>
+    
+                    <div class="hourly__forecast">
+                        <h2 class="hourly__forecast__heading">Today at</h2>
+                        <div class="horizontal__scroll__container">
+                            <ul class="temperature__list">
+                                <li class="temperature__list__item temperature__card">
+    
+                                </li>
+    
+                                <li class="temperature__list__item temperature__card">
+    
+                                </li>
+    
+                                <li class="temperature__list__item temperature__card">
+    
+                                </li>
+    
+                                <li class="temperature__list__item temperature__card">
+    
+                                </li>
+    
+                                <li class="temperature__list__item temperature__card">
+    
+                                </li>
+    
+                                <li class="temperature__list__item temperature__card">
+    
+                                </li>
+    
+                                <li class="temperature__list__item temperature__card">
+    
+                                </li>
+    
+                                <li class="temperature__list__item temperature__card">
+    
+                                </li>
+                            </ul>
+        
+                            <ul class="wind__list">
+                                <li class="wind__list__item wind__card">
+    
+                                </li>
+    
+                                <li class="wind__list__item wind__card">
+    
+                                </li>
+    
+                                <li class="wind__list__item wind__card">
+    
+                                </li>
+    
+                                <li class="wind__list__item wind__card">
+    
+                                </li>
+    
+                                <li class="wind__list__item wind__card">
+    
+                                </li>
+    
+                                <li class="wind__list__item wind__card">
+    
+                                </li>
+    
+                                <li class="wind__list__item wind__card">
+    
+                                </li>
+    
+                                <li class="wind__list__item wind__card">
+    
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
 </body>
 </html>
