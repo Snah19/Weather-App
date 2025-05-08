@@ -805,6 +805,7 @@
     .air__quality__list__item {
         display: flex;
         justify-content: end;
+        align-items: end;
         column-gap: 4px;
         width: 50%;
 
@@ -822,6 +823,7 @@
 
     .air__quality__list__item span {
         font-size: calc(14 / 16 * 1rem);
+        vertical-align: bottom;
         color: var(--on-surface-variant);
     }
 
