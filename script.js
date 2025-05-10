@@ -1,87 +1,14 @@
 import { getDayName, getMonthName, getHourFromTimestamp, getHourFromDateTime } from "./datetime.js";
-import { getWeatherData, getForecastData, getAirPollutionData, getGeoData} from "/resources.js";
+import { getWeatherData, getForecastData, getAirPollutionData, getGeoData} from "./resources.js";
+import { startOnConnection } from "./connection.js";
 
-const searchView = document.querySelector(".search__view");
+startOnConnection();
+
+//#region EVENTS
+
 const btnSearch = document.querySelector(".btn__search");
-const btnBack = document.querySelector(".btn__back");
-
-const searchField = document.querySelector(".search__field");
-const searchResultList = document.querySelector(".search__result__list");
-const loadingSpinner = document.querySelector(".loading__spinner");
-
-const aqiText = {
-    1: {
-        level: "Good"
-    },
-    2: {
-        level: "Fair"
-    },
-    3: {
-        level: "Moderate"
-    },
-    4: {
-        level: "Poor"
-    },
-    5: {
-        level: "Very Poor"
-    },
-};
-
-function renderMainSection() {
-    renderCurrentWeather();
-    renderFiveDayForecast();
-    renderTodayHighlights();
-    renderHourlyForecast();
-}
-
-renderMainSection();
-
-async function getLocationAndRender() {
-    try {
-        let userLocation = JSON.parse(localStorage.getItem("userLocation"));
-        if (!userLocation) {
-            userLocation = await new Promise((resolve, reject) => {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude: lat, longitude: lon } = position.coords;
-                        const location = { lat, lon };
-                        localStorage.setItem("userLocation", JSON.stringify(location));
-                        resolve(location);
-                    },
-                    (error) => reject(error)
-                );
-            });
-        }
-
-        let searchedLocation = JSON.parse(localStorage.getItem("searchedLocation"));
-        if (!searchedLocation) {
-            localStorage.setItem("searchedLocation", JSON.stringify(userLocation));
-        }
-
-        renderMainSection();
-    } catch (err) {
-        console.error("Error retrieving location:", err);
-    }
-}
-
-// Run when online
-function runWhenOnline() {
-    if (navigator.onLine) {
-        getLocationAndRender();
-    } else {
-        window.addEventListener("online", () => {
-            getLocationAndRender();
-        }, { once: true }); // Only run once when reconnected
-    }
-}
-
-runWhenOnline();
-
-
-// HEADER
-
-//#region SEARCH/BACK BUTTON TOGGLERS
 btnSearch.addEventListener("click", () => {
+    const searchView = document.querySelector(".search__view");
     searchView.classList.add("mask-on");
 
     setTimeout(() => {
@@ -89,118 +16,58 @@ btnSearch.addEventListener("click", () => {
     }, 250);
 });
 
+const btnBack = document.querySelector(".btn__back");
 btnBack.addEventListener("click", () => {
+    const searchView = document.querySelector(".search__view");
     searchView.classList.remove("mask-on");
 });
 
-//#endregion
+const btnCurrentLocation = document.querySelector(".btn__current__location");
+btnCurrentLocation.addEventListener("click", () => {
+    const {lat, lon} = JSON.parse(localStorage.getItem("userLocation"));
+    localStorage.setItem("currentLocation", JSON.stringify({lat, lon}));
 
-//#region SEARCH LOGIC IMPLEMENTATION
+    renderMainSection();
+});
 
-let focusedIndex = -1;
-
-function removeClassFromElements(elements, className) {
-    elements.forEach((element) => {
-        element.classList.remove(className);
-    });
-}
-
-function getSearchResultLinks() {
-    return Array.from(searchResultList.querySelectorAll(".search__result__link"));
-}
-
-function getHoveredSearchResultLink(searchResultLinks, hoveredIndex) {
-    return searchResultLinks.find((searchResultLink) =>
-        +searchResultLink.getAttribute("data-index") === hoveredIndex
-    );
-}
-
-async function renderSearchedLocations() {
-    const object = await getGeoData(searchField.value);
-
-    if (object.length === 0) {
-        searchResultList.classList.add("is-invisible");
-    }
-    else {
-        searchResultList.classList.remove("is-invisible");
-    }
-    loadingSpinner.classList.add("is-visible");
-
-    let index = -1;
-    let searchResultListItemHTML = "";
-    for (const obj of object) {
-        const {name: city, state, country} = obj;
-        const {lat, lon} = obj;
-
-        searchResultListItemHTML += `
-<li class="search__result__list__item">
-    <a class="search__result__link" href="" data-lat="${lat}" data-lon="${lon}" data-index="${++index}">
-        <svg class="svg__location" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512">
-            <circle fill="var(--white)" cx="256" cy="192" r="32"/>
-            <path fill="var(--white)" d="M256,32C167.78,32,96,100.65,96,185c0,40.17,18.31,93.59,54.42,158.78,29,52.34,62.55,99.67,80,123.22a31.75,31.75,0,0,0,51.22,0c17.42-23.55,51-70.88,80-123.22C397.69,278.61,416,225.19,416,185,416,100.65,344.22,32,256,32Zm0,224a64,64,0,1,1,64-64A64.07,64.07,0,0,1,256,256Z"/>
-        </svg>
-
-        <div class="city__container">
-            <p class="city__name">${city}</p>
-            <p class="state__name">${state || ""} ${state? "," : ""} ${country}</p>
-        </div>
-    </a>
-</li>
-        `;
-    }
-
-    searchResultList.innerHTML = searchResultListItemHTML;
-}
-
-searchField.addEventListener("input", () => {
-    if (searchField.value === "") {
-        focusedIndex = -1;
+const searchResultList = document.querySelector(".search__result__list");
+searchResultList.addEventListener("click", (event) => {
+    event.preventDefault();
+    const searchResultLink = event.target.closest(".search__result__link");
+    displaySearchResult(searchResultLink);
+});
+searchResultList.addEventListener("mouseover", (event) => {
+    const hoveredSearchResultLink = event.target.closest(".search__result__link");
+    if (!hoveredSearchResultLink) {
         return;
     }
 
-    renderSearchedLocations();
-});
+    const searchResultLinks = getSearchResultLinks();
+    removeClassFromElements(searchResultLinks, "is-hovered");
 
-searchField.addEventListener("focus", () => {
-    if (searchField.value === "") {   
-        focusedIndex = -1;     
-        return;
-    }
+    if (hoveredSearchResultLink) {
+        hoveredSearchResultLink.classList.add("is-hovered");
 
-    searchResultList.classList.remove("is-invisible");
-    searchView.classList.add("mask-on");
-    renderSearchedLocations();
-});
-
-searchField.addEventListener("blur", (event) => {
-    const screenWidth = window.matchMedia('(min-width: calc(1200 / 16 * 1rem))');
-
-    if (!searchResultList.contains(event.relatedTarget)) {
-        searchResultList.classList.add("is-invisible");
-    }
-
-    if (screenWidth.matches) {
-        searchView.classList.remove("mask-on");
+        focusedIndex = +hoveredSearchResultLink.getAttribute("data-index");
     }
 });
 
+const searchField = document.querySelector(".search__field");
 searchField.addEventListener("keydown", (event) => {
     const searchResultLinks = getSearchResultLinks();
     if (event.key === "Enter") {
-        for (const searchResultLink of getSearchResultLinks()) {
+        for (const searchResultLink of searchResultLinks) {
             const index = +searchResultLink.getAttribute("data-index");
         
             if (focusedIndex === -1 || index === focusedIndex) {
-                console.log(`index=${index}, focusedIndex=${focusedIndex}`);
                 displaySearchResult(searchResultLink);
-
                 focusedIndex = -1;
                 return;
             }
-        }        
+        }
     }
 
-    if (event.key !== "ArrowDown" && event.key !== "ArrowUp" && event.key !== "enter") {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp" && event.key !== "Enter") {
         return;
     }
     
@@ -224,37 +91,136 @@ searchField.addEventListener("keydown", (event) => {
         }
     }
 
-
     const hoveredSearchResultLink = getHoveredSearchResultLink(searchResultLinks, focusedIndex);
     const city = hoveredSearchResultLink.querySelector(".city__name").textContent;
     searchField.value = city;
     hoveredSearchResultLink.classList.add("is-hovered");
 });
-
-searchResultList.addEventListener("mouseover", (event) => {
-    const hoveredSearchResultLink = event.target.closest(".search__result__link");
-    if (!hoveredSearchResultLink) {
+searchField.addEventListener("input", () => {
+    if (searchField.value === "") {
+        focusedIndex = -1;
+        searchResultList.classList.add("is-invisible");
         return;
     }
 
-    const searchResultLinks = getSearchResultLinks();
-    removeClassFromElements(searchResultLinks, "is-hovered");
+    renderSearchLResult();
+});
+searchField.addEventListener("focus", () => {
+    if (searchField.value === "") {   
+        focusedIndex = -1;     
+        return;
+    }
 
-    if (hoveredSearchResultLink) {
-        hoveredSearchResultLink.classList.add("is-hovered");
+    const searchView = document.querySelector(".search__view");
+    searchView.classList.add("mask-on");
 
-        focusedIndex = +hoveredSearchResultLink.getAttribute("data-index");
+    renderSearchLResult();
+});
+searchField.addEventListener("blur", (event) => {
+    const screenWidth = window.matchMedia('(min-width: calc(768 / 16 * 1rem))');
+
+    if (!searchResultList.contains(event.relatedTarget)) {
+        searchResultList.classList.add("is-invisible");
+    }
+
+    if (screenWidth.matches) {
+        const searchView = document.querySelector(".search__view");
+        searchView.classList.remove("mask-on");
     }
 });
 
+
 //#endregion
 
-//  MAIN
+renderMainSection();
 
+export function renderMainSection() {
+    renderCurrentWeather();
+    renderFiveDayForecast();
+    renderTodayHighlights();
+    renderHourlyForecast();
+}
+
+function displaySearchResult(searchResultLink) {
+    const city = searchResultLink.querySelector(".city__name").innerHTML;
+    searchField.value = city;
+
+    const lat = searchResultLink.getAttribute("data-lat");
+    const lon = searchResultLink.getAttribute("data-lon");
+
+    localStorage.setItem("currentLocation", JSON.stringify({lat, lon}));
+    const searchView = document.querySelector(".search__view");
+    searchView.classList.remove("mask-on");
+    searchResultList.classList.add("is-invisible");
+    renderMainSection();
+}
+
+//#region HEADER
+let focusedIndex = -1;
+
+function removeClassFromElements(elements, className) {
+    elements.forEach((element) => {
+        element.classList.remove(className);
+    });
+}
+
+function getSearchResultLinks() {
+    return Array.from(searchResultList.querySelectorAll(".search__result__link"));
+}
+
+function getHoveredSearchResultLink(searchResultLinks, hoveredIndex) {
+    return searchResultLinks.find((searchResultLink) => {
+        return +searchResultLink.getAttribute("data-index") === hoveredIndex;
+    });
+}
+
+async function renderSearchLResult() {
+    const geoData = await getGeoData(searchField.value);
+
+    const loadingSpinner = document.querySelector(".loading__spinner");
+
+    if (geoData.length === 0) {
+        searchResultList.classList.add("is-invisible");
+        loadingSpinner.classList.remove("is-invisible");
+    }
+    else {
+        searchResultList.classList.remove("is-invisible");
+        loadingSpinner.classList.add("is-invisible");
+    }
+
+    let index = -1;
+    let searchResultListItemHTML = "";
+
+    for (const geo of geoData) {
+        const { name: city, state, country } = geo;
+        const {lat, lon} = geo;
+
+        searchResultListItemHTML += `
+<li class="search__result__list__item">
+    <a class="search__result__link" href="" data-lat="${lat}" data-lon="${lon}" data-index="${++index}">
+        <svg class="svg__location" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512">
+            <circle fill="var(--white)" cx="256" cy="192" r="32"/>
+            <path fill="var(--white)" d="M256,32C167.78,32,96,100.65,96,185c0,40.17,18.31,93.59,54.42,158.78,29,52.34,62.55,99.67,80,123.22a31.75,31.75,0,0,0,51.22,0c17.42-23.55,51-70.88,80-123.22C397.69,278.61,416,225.19,416,185,416,100.65,344.22,32,256,32Zm0,224a64,64,0,1,1,64-64A64.07,64.07,0,0,1,256,256Z"/>
+        </svg>
+
+        <div class="city__container">
+            <p class="city__name">${city}</p>
+            <p class="state__name">${state || ""} ${state? "," : ""} ${country}</p>
+        </div>
+    </a>
+</li>
+        `;
+    }
+
+    searchResultList.innerHTML = searchResultListItemHTML;
+}
+
+//#endregion
+
+//#region MAIN
 //#region CURRENT WEATHER
-
 export async function renderCurrentWeather() {
-    const {lat, lon} = JSON.parse(localStorage.getItem("searchedLocation"));
+    const {lat, lon} = JSON.parse(localStorage.getItem("currentLocation"));
     const object =  await getWeatherData(lat, lon);
 
     const {name: city, sys, main, weather} =object;
@@ -272,12 +238,16 @@ export async function renderCurrentWeather() {
     const currentWeatherCard = document.querySelector(".current__weather__card");
     currentWeatherCard.innerHTML = `
 <h2 class="current__weather__heading">Now</h2>
+
+<!-- display: flex; -->
 <div class="current__weather">
-    <h2 class="current__temperature__headline">${Math.round(temp)}&deg;<sub>c</sub></h2>
-    <img class="current__weather__image" src="./images/weather_icons/${icon}.png" alt="" width="60" height="60">
+    <h2 class="current__temperature__heading">${Math.round(temp)}&deg;<sub>c</sub></h2>
+    <img class="current__weather__image" src="./images/weather_icons/${icon}.png" alt="" width="60" height="60" />
 </div>
-<p class="weather__desctiption">${description}</p>
-<hr class="horizontal-rule">
+<p class="weather__description">${description}</p>
+<hr class="horizontal-rule" />
+
+<!-- display: flex; -->
 <div class="current__weather__date">
     <svg class="svg__calendar" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512">
         <path fill="var(--white)" d="M480,128a64,64,0,0,0-64-64H400V48.45c0-8.61-6.62-16-15.23-16.43A16,16,0,0,0,368,48V64H144V48.45c0-8.61-6.62-16-15.23-16.43A16,16,0,0,0,112,48V64H96a64,64,0,0,0-64,64v12a4,4,0,0,0,4,4H476a4,4,0,0,0,4-4Z"/>
@@ -294,40 +264,10 @@ export async function renderCurrentWeather() {
 </div>
     `;
 }
-
-const btnCurrentLocation = document.querySelector(".btn__current__location");
-btnCurrentLocation.addEventListener("click", () => {
-    const {lat, lon} = JSON.parse(localStorage.getItem("userLocation"));
-    localStorage.setItem("searchedLocation", JSON.stringify({lat, lon}));
-
-    renderMainSection();
-});
-
-function displaySearchResult(searchResultLink) {
-    const city = searchResultLink.querySelector(".city__name").innerHTML;
-    searchField.value = city;
-
-    const lat = searchResultLink.getAttribute("data-lat");
-    const lon = searchResultLink.getAttribute("data-lon");
-
-    localStorage.setItem("searchedLocation", JSON.stringify({lat, lon}));
-    renderCurrentWeather();
-
-    searchView.classList.remove("mask-on");
-    searchResultList.classList.add("is-invisible");
-}
-
-searchResultList.addEventListener("click", (event) => {
-    const searchResultLink = event.target.closest(".search__result__link");
-    displaySearchResult(searchResultLink);
-
-    renderMainSection();
-});
 //#endregion
-
 //#region FIVE DAY FORECAST
 export async function renderFiveDayForecast() {
-    const {lat, lon} = JSON.parse(localStorage.getItem("searchedLocation"));
+    const {lat, lon} = JSON.parse(localStorage.getItem("currentLocation"));
     const object = await getForecastData(lat, lon);
 
     const {list} = object;
@@ -345,7 +285,10 @@ export async function renderFiveDayForecast() {
         const weekdayName = getDayName(date.getDay());
 
         fiveDayForecastListItemHTML += `
+<!-- display: flex; -->
 <li class="five__day__forecast__list__item">
+
+    <!-- display: flex; -->
     <div class="weather__and__temperature">
         <img class="weather__icon" src="./images/weather_icons/${icon}.png" width="36" height="36" alt="">
         <p class="temperature">${Math.round(temp)}&deg;c</p>
@@ -359,20 +302,18 @@ export async function renderFiveDayForecast() {
     fiveDayForecastList.innerHTML = fiveDayForecastListItemHTML;
 }
 //#endregion
-
 //#region TODAY HIGHLIGHTS
-
 export async function renderTodayHighlights() {
     generateAirQualityIndex();
-    generateSunriseAndSunset();
-    generateHumidity();
-    generatePressure();
-    generateVisibility();
-    generateFeelsLike();
+    renderSunriseAndSunset();
+    renderHumidity();
+    renderPressure();
+    renderVisibility();
+    renderFeelsLike();
 }
 
 async function generateAirQualityIndex() {
-    const {lat, lon} = JSON.parse(localStorage.getItem("searchedLocation"));
+    const {lat, lon} = JSON.parse(localStorage.getItem("currentLocation"));
     const data = await getAirPollutionData(lat, lon);
 
     const {list} = data;
@@ -381,14 +322,32 @@ async function generateAirQualityIndex() {
     const {no2, o3, so2, pm2_5} = components;
     const {aqi} = main;
 
-    const airQualityCard = document.querySelector(".air__quality__card");
+    const aqiText = {
+        1: {
+            level: "Good"
+        },
+        2: {
+            level: "Fair"
+        },
+        3: {
+            level: "Moderate"
+        },
+        4: {
+            level: "Poor"
+        },
+        5: {
+            level: "Very Poor"
+        },
+    };
+
+    const airQualityCard = document.querySelector(".today__highlight__list__item.air-quality");
 
     airQualityCard.innerHTML = `
 <!-- position: absolute -->
 <span class="air__quality__badge aqi-${aqi}">${aqiText[aqi].level}</span>
 
 <h3>Air Quality Index</h3>
-
+<!-- display: flex; -->
 <div class="air__quality__table">
     <svg class="svg__wind" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15.7639 7C16.3132 6.38625 17.1115 6 18 6C19.6569 6 21 7.34315 21 9C21 10.6569 19.6569 12 18 12H3M8.50926 4.66667C8.87548 4.2575 9.40767 4 10 4C11.1046 4 12 4.89543 12 6C12 7.10457 11.1046 8 10 8H3M11.5093 19.3333C11.8755 19.7425 12.4077 20 13 20C14.1046 20 15 19.1046 15 18C15 16.8954 14.1046 16 13 16H3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -415,16 +374,17 @@ async function generateAirQualityIndex() {
     `;
 }
 
-async function generateSunriseAndSunset() {
-    const {lat, lon} = JSON.parse(localStorage.getItem("searchedLocation"));
+async function renderSunriseAndSunset() {
+    const {lat, lon} = JSON.parse(localStorage.getItem("currentLocation"));
     const object = await getForecastData(lat, lon);
 
     const {city} = object;
     const {sunrise, sunset} = city;
 
-    const sunRiseAndSunsetCard = document.querySelector(".sunrise__and__sunset__card");
+    const sunRiseAndSunsetCard = document.querySelector(".today__highlight__list__item.sunrise-and-sunset");
     sunRiseAndSunsetCard.innerHTML = `
 <h3>Sunrise & Sunset</h3>
+<!-- display: flex; -->
 <ul class="sunrise__and__sunset__list">
     <li class="sunrise__list__item">
         <svg class="svg__sun" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512" fill="#fff">
@@ -457,18 +417,19 @@ async function generateSunriseAndSunset() {
 
 }
 
-async function generateHumidity() {
-    const {lat, lon} = JSON.parse(localStorage.getItem("searchedLocation"));
+async function renderHumidity() {
+    const {lat, lon} = JSON.parse(localStorage.getItem("currentLocation"));
     const object = await getForecastData(lat, lon);
 
     const {list} = object;
     const {main} = list[0];
     const {humidity} = main;
 
-    const humidityCard = document.querySelector(".humidity__card");
+    const humidityCard = document.querySelector(".today__highlight__list__item.humidity");
     humidityCard.innerHTML = `
 <h3>Humidity</h3>
-<div class="humidity">
+<!-- display: flex; -->
+<div class="div__humidity">
     <svg class="svg__humidity" fill="#fff" height="32" width="32" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
     viewBox="0 0 328.611 328.611" xml:space="preserve">
     <g>
@@ -494,18 +455,19 @@ async function generateHumidity() {
     `;
 }
 
-async function generatePressure() {
-    const {lat, lon} = JSON.parse(localStorage.getItem("searchedLocation"));
+async function renderPressure() {
+    const {lat, lon} = JSON.parse(localStorage.getItem("currentLocation"));
     const object = await getForecastData(lat, lon);
 
     const {list} = object;
     const {main} = list[0];
     const {pressure} = main;
     
-    const pressureCard = document.querySelector(".pressure__card");
+    const pressureCard = document.querySelector(".today__highlight__list__item.pressure");
     pressureCard.innerHTML = `
 <h3>Pressure</h3>
-<div class="pressure">
+<!-- display: flex; -->
+<div class="div__pressure">
     <svg class="svg__pressure" fill="#fff" width="32" height="32" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <path d="M2.643 6.357c1.747-1.5 3.127-2.686 6.872-.57 1.799 1.016 3.25 1.4 4.457 1.398 2.115 0 3.486-1.176 4.671-2.193a1.037 1.037 0 0 0 .122-1.439.987.987 0 0 0-1.41-.125c-1.746 1.502-3.127 2.688-6.872.57-4.948-2.793-7.266-.803-9.128.797a1.037 1.037 0 0 0-.121 1.439.986.986 0 0 0 1.409.123zm14.712 2.178c-1.746 1.5-3.127 2.688-6.872.57-4.948-2.795-7.266-.804-9.128.795a1.037 1.037 0 0 0-.121 1.439.986.986 0 0 0 1.409.125c1.747-1.501 3.127-2.687 6.872-.572 1.799 1.018 3.25 1.4 4.457 1.4 2.115 0 3.486-1.176 4.671-2.195a1.035 1.035 0 0 0 .122-1.438.986.986 0 0 0-1.41-.124zm0 5.106c-1.746 1.502-3.127 2.688-6.872.572-4.948-2.795-7.266-.805-9.128.795a1.037 1.037 0 0 0-.121 1.439.985.985 0 0 0 1.409.123c1.747-1.5 3.127-2.685 6.872-.57 1.799 1.016 3.25 1.4 4.457 1.4 2.115 0 3.486-1.178 4.671-2.195a1.037 1.037 0 0 0 .122-1.439.988.988 0 0 0-1.41-.125z"/>
     </svg>
@@ -514,17 +476,18 @@ async function generatePressure() {
     `;
 }
 
-async function generateVisibility() {
-    const {lat, lon} = JSON.parse(localStorage.getItem("searchedLocation"));
+async function renderVisibility() {
+    const {lat, lon} = JSON.parse(localStorage.getItem("currentLocation"));
     const object = await getForecastData(lat, lon);
 
     const {list} = object;
     const {visibility} = list[0];
 
-    const visibilityCard = document.querySelector(".visibility__card");
+    const visibilityCard = document.querySelector(".today__highlight__list__item.visibility");
     visibilityCard.innerHTML = `
 <h3>Visibility</h3>
-<div class="visibility">
+<!-- display: flex; -->
+<div class="div__visibility">
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
         <circle fill="#fff" cx="256" cy="256" r="64"/>
         <path fill="#fff" d="M490.84,238.6c-26.46-40.92-60.79-75.68-99.27-100.53C349,110.55,302,96,255.66,96c-42.52,0-84.33,12.15-124.27,36.11C90.66,156.54,53.76,192.23,21.71,238.18a31.92,31.92,0,0,0-.64,35.54c26.41,41.33,60.4,76.14,98.28,100.65C162,402,207.9,416,255.66,416c46.71,0,93.81-14.43,136.2-41.72,38.46-24.77,72.72-59.66,99.08-100.92A32.2,32.2,0,0,0,490.84,238.6ZM256,352a96,96,0,1,1,96-96A96.11,96.11,0,0,1,256,352Z"/>
@@ -534,8 +497,8 @@ async function generateVisibility() {
     `;
 }
 
-async function generateFeelsLike() {
-    const {lat, lon} = JSON.parse(localStorage.getItem("searchedLocation"));
+async function renderFeelsLike() {
+    const {lat, lon} = JSON.parse(localStorage.getItem("currentLocation"));
     const object = await getForecastData(lat, lon);
 
     const {list} = object;
@@ -543,10 +506,11 @@ async function generateFeelsLike() {
     
     const {feels_like: feelsLike} = main;
 
-    const feelsLikeCard = document.querySelector(".feels__like__card");
+    const feelsLikeCard = document.querySelector(".feels__like");
     feelsLikeCard.innerHTML = `
 <h3>Feels Like</h3>
-<div class="feels__like">
+<!-- display: flex; -->
+<div class="div__feels__like">
     <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve" width="32" height="32">
         <g>
         <path d="M30.473,26.115V8.528c0-1.714-0.67-3.326-1.883-4.542c-1.196-1.198-2.853-1.883-4.545-1.883   c-3.526,0-6.397,2.883-6.397,6.426v17.297c-3.558,2.129-5.735,5.948-5.735,10.148c0,6.575,5.35,11.924,11.923,11.924   c6.559,0,11.898-5.349,11.898-11.924C35.724,32.006,33.731,28.295,30.473,26.115z M23.832,45.229c-5.104,0-9.258-4.153-9.258-9.256   c0-3.473,1.917-6.602,5.006-8.171l0.729-0.37V8.528c0-2.071,1.675-3.759,3.729-3.759c0.988,0,1.96,0.401,2.664,1.104   c0.721,0.722,1.099,1.639,1.099,2.654v19.095l0.667,0.385c2.831,1.628,4.589,4.685,4.589,7.966   C33.057,41.078,28.921,45.229,23.832,45.229z"/>
@@ -561,9 +525,7 @@ async function generateFeelsLike() {
     `;
 }
 //#endregion
-
-//#region Hourly Forecast
-
+//#region HOURLY FORECAST
 async function renderHourlyForecast() {
     renderTemperatureList();
     renderWindList();
@@ -575,7 +537,7 @@ async function renderTemperatureList() {
 }
 
 async function getTemperatureCardsHTML() {
-    const {lat, lon} = JSON.parse(localStorage.getItem("searchedLocation"));
+    const {lat, lon} = JSON.parse(localStorage.getItem("currentLocation"));
     const forecastData = await getForecastData(lat, lon);
     const {list} = forecastData;
 
@@ -603,11 +565,11 @@ async function getTemperatureCardsHTML() {
 
 async function renderWindList() {
     const windList = document.querySelector(".wind__list");
-    windList.innerHTML = await getWindSpeedCardsHTML();
+    windList.innerHTML = await getWindCardsHTML();
 }
 
-async function getWindSpeedCardsHTML() {
-    const {lat, lon} = JSON.parse(localStorage.getItem("searchedLocation"));
+async function getWindCardsHTML() {
+    const {lat, lon} = JSON.parse(localStorage.getItem("currentLocation"));
     const forecastData = await getForecastData(lat, lon);
     const {list} = forecastData;
 
@@ -618,18 +580,18 @@ async function getWindSpeedCardsHTML() {
         }
 
         const {dt_txt, wind} = list[i];
-        const {deg} = wind;
+        const {deg, speed} = wind;
 
         windSpeedCardsHTML += `
 <li class="wind__list__item wind__card">
     <p class="hour">${getHourFromDateTime(dt_txt)}</p>
     <img class="weather__icon" src="./images/weather_icons/direction.png" width="48" height="48" alt="" style="transform: rotate(${deg - 180}deg);">
-    <p class="wind__speed">15 km/h</p>
+    <p class="wind__speed">${speed} km/h</p>
 </li>  
         `;
     } 
 
     return windSpeedCardsHTML;
 };
-
+//#endregion
 //#endregion

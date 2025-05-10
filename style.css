@@ -1,14 +1,3 @@
-@layer media_queries {
-
-    @media (width >= calc(768 / 16 * 1rem)) {
-        
-    }
-
-    @media (width >= calc(1200 / 16 * 1rem)) {
-        
-    }
-}
-
 @layer fonts {
     /* nunito-sans-regular - latin */
     @font-face {
@@ -205,7 +194,11 @@
         content: "";
 
         position: absolute;
-        inset: 0; /* top: 0; right: 0; bottom: 0; left: 0; */
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
         border-radius: inherit;
         clip-path: circle(100% at 50% 50%);
         transition: 100ms ease;
@@ -289,7 +282,7 @@
         border-radius: 50%;
         background: var(--white-alpha-4);
 
-        @media (width >= calc(1200 / 16 * 1rem)) {
+        @media (width >= calc(768 / 16 * 1rem)) {
             display: none;
         }
     }
@@ -307,7 +300,7 @@
         background: var(--primary);
         border-radius: 50%;
 
-        @media (width >= calc(768 / 16 * 1rem)) {
+        @media (width >= calc(1200 / 16 * 1rem)) {
             display: flex;
             column-gap: 16px;
 
@@ -319,9 +312,9 @@
 
     .span__current__location {
         display: none;
-        color: var(--on-primary);
 
-        @media (width >= calc(768 / 16 * 1rem)) {
+        color: var(--on-primary);
+        @media (width >= calc(1200 / 16 * 1rem)) {
             display: block;
         }
     }
@@ -345,7 +338,7 @@
         visibility: hidden;
         transition: 500ms ease;
 
-        @media (width >= calc(1200 / 16 * 1rem)) {
+        @media (width >= calc(768 / 16 * 1rem)) {
             all: unset;
             opacity: 1;
             visibility: visible;
@@ -353,7 +346,7 @@
     }
 
     .search__view.mask-on {
-        @media (width < calc(1200 / 16 * 1rem)) {
+        @media (width < calc(768 / 16 * 1rem)) {
             clip-path: circle(145% at 100% 0%);
             opacity: 1;
             visibility: visible;
@@ -365,7 +358,7 @@
         position: relative;
         border-block-end: 1px solid var(--outline);
 
-        @media (width >= calc(1200 / 16 * 1rem)) {
+        @media (width >= calc(768 / 16 * 1rem)) {
             border-block-end: none;
             width: 500px;
         }
@@ -380,7 +373,7 @@
         background: transparent;
         box-shadow: none;
 
-        @media (width >= calc(1200 / 16 * 1rem)) {
+        @media (width >= calc(768 / 16 * 1rem)) {
             background: var(--surface);
             border-radius: 500px;
             height: 56px;
@@ -394,7 +387,7 @@
         left: 28px;
 
         display: none;
-        @media (width >= calc(1200 / 16 * 1rem)) {
+        @media (width >= calc(768 / 16 * 1rem)) {
             display: block;
         }
     }
@@ -402,6 +395,8 @@
     .btn__back {
         position: absolute;
         top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        left: 28px;
 
         display: flex;
         justify-content: center;
@@ -410,10 +405,7 @@
         height: 48px;
         border-radius: 50%;
 
-        transform: translateX(-50%) translateY(-50%);
-        left: 28px;
-
-        @media (width >= calc(1200 / 16 * 1rem)) {
+        @media (width >= calc(768 / 16 * 1rem)) {
             display: none;
         }
     }
@@ -440,7 +432,7 @@
     }
 
     .search__result__list {
-        @media (width >= calc(1200 / 16 * 1rem)) {
+        @media (width >= calc(768 / 16 * 1rem)) {
             position: absolute;
             top: calc(16px + 56px + 5px);
             width: 500px;
@@ -448,12 +440,11 @@
             border-radius: 10px;
             background: var(--surface);
             box-shadow: var(--shadow-1);
-            transition: 100ms ease;
         }
     }
 
     .search__result__list.is-invisible {
-        @media (width >= calc(1200 / 16 * 1rem)) {
+        @media (width >= calc(768 / 16 * 1rem)) {
             opacity: 0;
             visibility: hidden;
         }
@@ -464,7 +455,7 @@
     }
 
     .search__result__list__item:first-child {
-        @media (width < calc(1200 / 16 * 1rem)) {
+        @media (width < calc(768 / 16 * 1rem)) {
             padding-block-start: 10px;
         }
     }
@@ -502,32 +493,27 @@
         overflow: hidden;
 
         @media (width >= calc(768 / 16 * 1rem)) {
-            height: calc(100vh - 96px);
-            height: calc(100svh - 96px);
+            height: calc(100vh - 88px);
+            height: calc(100svh - 88px);
         }
 
-        @media (width >= calc(1200 / 16 * 1rem)) {
+        /* @media (width >= calc(1200 / 16 * 1rem)) {
             height: calc(100vh - 120px);
             height: calc(100svh - 120px);
-        }
+        } */
     }
 
     .main__wrapper {
         position: relative;
         display: grid;
-        align-content: start;
         grid-template-columns: minmax(0, 1fr);
         gap: 20px;
         height: 100%;
         overflow-y: auto; /*For Firefox*/
         overflow-y: overlay;
 
-        padding-block: 16px;
-
         @media (width >= calc(768 / 16 * 1rem)) {
             grid-template-columns: 280px minmax(0, 1fr);
-
-            padding-block-start: 0;
             align-items: start;
             gap: 24px;
         }
@@ -536,19 +522,6 @@
             grid-template-columns: 360px minmax(0, 1fr);
             gap: 40px;
         }
-    }
-
-    .main__wrapper::before {
-        content: "";
-
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 40px;
-        background: var(--gradient-1);
-        pointer-events: none;
-        z-index: 0;
     }
 
     .main__wrapper::-webkit-scrollbar-thumb {
@@ -573,16 +546,13 @@
     }
 }
 
-@layer current__weather__card {
+@layer current__weather {
     .current__weather__card {
-        grid-area: current__weather;
-
         border-radius: 28px;
         width: 100%;
         height: 259.6px;
         background: var(--surface);
         color: var(--on-surface);
-        margin-inline: auto;
         margin-block-end: 16px;
 
         padding: 20px;
@@ -599,27 +569,23 @@
     .current__weather__heading {
         font-size: calc(20 / 16 * 1rem);
         margin-block-end: 12px;
-        color: var(--on-surface);
+        color: var(--on-background);
     }
 
     .current__weather {
         display: flex;
         align-items: center;
-        column-gap: 20px;
+        justify-content: space-between;
         margin-block-end: 12px;
     }
 
-    .current__temperature__headline {
+    .current__temperature__heading {
         color: var(--white);
         font-size: calc(56 / 16 * 1rem);
         line-height: 1.1;
     }
 
-    .current__weather__image {
-        margin-inline: auto;
-    }
-
-    .weather__desctiption {
+    .weather__description {
         font-size: calc(16 / 16 * 1rem);
         margin-block-end: 12px;
         text-transform: capitalize;
@@ -646,10 +612,6 @@
 }
 
 @layer five__day__forecast {
-    .five__day__forecast {
-        grid-area: five__day__forecast;
-    }
-
     .five__day__forecast__heading {
         font-size: calc(20 / 16 * 1rem);
         margin-block-end: 12px;
@@ -698,7 +660,6 @@
 
 @layer today__highlights {
     .today__highlights__card {
-        grid-area: today__highlights;
         padding: 20px;
         border-radius: 28px;
         background: var(--surface);
@@ -748,8 +709,9 @@
         font-size: calc(20 / 16 * 1rem);
     }
 
-    .air__quality__card {
+    .today__highlight__list__item.air-quality {
         grid-column-start: 1; grid-column-end: -1;
+        height: 133px;
     }
 
     .air__quality__badge {
@@ -827,8 +789,9 @@
         color: var(--on-surface-variant);
     }
 
-    .sunrise__and__sunset__card {
+    .today__highlight__list__item.sunrise-and-sunset {
         grid-column-start: 1; grid-column-end: -1;
+        height: 179px;
     }
 
     .sunrise__and__sunset__heading {
@@ -861,10 +824,10 @@
         font-size: calc(20 / 16 * 1rem);
     }
 
-    .humidity,
-    .pressure,
-    .visibility,
-    .feels__like {
+    .div__humidity,
+    .div__pressure,
+    .div__visibility,
+    .div__feels__like {
         display: flex;
         justify-content: space-between;
         align-items: end;
@@ -874,27 +837,17 @@
         color: var(--on-surface-variant);
     }
 
-    .humidity__card,
-    .pressure__card,
-    .visibility__card,
-    .feels__like__card {
+    .today__highlight__list__item.humidity,
+    .today__highlight__list__item.pressure,
+    .today__highlight__list__item.visibility,
+    .today__highlight__list__item.feels__like {
         height: 108px;
     }
 }
 
 @layer hourly__forecast {
-    .hourly__forecast {
-        grid-area: hourly__forecast;
-    }
-
     .horizontal__scroll__container {
         overflow-x: auto;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
-    }
-
-    .horizontal__scroll__container::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
     }
 
     .temperature__list,
@@ -910,6 +863,7 @@
         text-align: center;
         min-width: 110px;
         padding: 16px;
+        margin-block-end: 12px;
         border-radius: 16px;
         background: var(--surface);
     }
@@ -936,5 +890,7 @@
     .wind__card {
         max-width: 200px;
         width: 100%;
+        min-height: 139px;
+        height: 100%;
     }
 }

@@ -1,10 +1,10 @@
 export function getMonthName(month) {
-    const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     return monthNames[month];
 }
 
 export function getDayName(day) {
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday","Thursday", "Friday", "Saturday"];
+    const dayNames = ["Sun", "Mon", "Tue", "Wed","Thu", "Fri", "Sat"];
     return dayNames[day];
 }
 
@@ -20,7 +20,7 @@ export function getHourFromTimestamp(timestamp) {
     const ampm = hours >= 12 ? 'PM' : 'AM';
   
     hours = hours % 12;
-    hours = hours ? hours : 12; 
+    hours = hours ? hours : 12;
   
     const formattedTime = `${hours}:${String(minutes).padStart(2, '0')} ${ampm}`;
     return formattedTime;

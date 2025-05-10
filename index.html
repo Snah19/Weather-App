@@ -12,8 +12,7 @@
 <body>
     
     <div class="container">
-
-        <!-- position: relative -->
+        <!-- position: relative; display: flex; -->
         <header class="header">
 
             <a class="header__left logo" href="">
@@ -26,7 +25,7 @@
                 <!-- position: relative -->
                 <div class="search__field__container">
 
-                    <input class="search__field" type="search" name="search" placeholder="Search city (e.g., Phnom Penh)..." autocomplete="off">
+                    <input class="search__field" type="search" name="search" placeholder="Search a city..." autocomplete="off">
 
                     <!-- position: absolute -->
                     <svg class="svg__search" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" >
@@ -42,22 +41,27 @@
                     </button>
 
                     <!-- position: absolute; -->
-                    <div class="loading__spinner is-invisible">
-                    </div>
+                    <span class="loading__spinner is-invisible">
+                    </span>
 
                 </div>
 
                 <ul class="search__result__list is-invisible">
-                    <!-- generateSearchedLocations(); -->
+                    <!-- script.js: renderSearchedLocations(); -->
                 </ul>
             </div>
 
+            <!-- display: flex; -->
             <div class="header__right">
+
+                <!-- display: flex; -->
                 <button class="btn__search ripple-effect">
                     <svg class="svg__search" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512" >
                         <path fill="var(--white)" d="M456.69,421.39,362.6,327.3a173.81,173.81,0,0,0,34.84-104.58C397.44,126.38,319.06,48,222.72,48S48,126.38,48,222.72s78.38,174.72,174.72,174.72A173.81,173.81,0,0,0,327.3,362.6l94.09,94.09a25,25,0,0,0,35.3-35.3ZM97.92,222.72a124.8,124.8,0,1,1,124.8,124.8A124.95,124.95,0,0,1,97.92,222.72Z"/>
                     </svg> 
                 </button>
+
+                <!-- display: flex; -->
                 <button class="btn__current__location">
                     <svg class="svg__locate" width="20" height="20" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
@@ -67,52 +71,64 @@
                     </svg>
                     <span class="span__current__location">Current Location</span>
                 </button>
+
             </div>
 
 
         </header>
 
         <main class="main">
+
+            <!-- position: relative; display: grid; -->
             <div class="main__wrapper">
+
                 <div class="content__left">
                     <div class="current__weather__card">
-                        <!-- script.js: generateCurrentWeather(lat, lon) -->
+                        <h2 class="current__weather__heading">Now</h2>
+                        <!-- script.js: renderCurrentWeather() -->
                     </div>
     
                     <div class="five__day__forecast">
                         <h2 class="five__day__forecast__heading">5 Day Forecast</h2>
-                        <div class="five__day__forecast__card">
-                            <ul class="five__day__forecast__list">
-                                <!-- script.js: generateFiveDayForecastList() -->
-                            </ul>
-                        </div>
+                        <ul class="five__day__forecast__list five__day__forecast__card">
+                            <!-- script.js: renderFiveDayForecast(); -->
+                        </ul>
                     </div>
+
                 </div>
+
                 <div class="content__right">
                     <div class="today__highlights__card">
                         <h2 class="highlights__heading">Today Highlights</h2>
+                        <!-- display: grid; -->
                         <ul class="today__highlight__list">
-                            <li class="today__highlight__list__item air__quality__card">
-                                <!-- script.js: generateAirQualityCard() -->
+                            <!-- position: relative; -->
+                            <li class="today__highlight__list__item air-quality">
+
                             </li>
     
-                            <li class="today__highlight__list__item sunrise__and__sunset__card">
-                                <!-- script.js: generateSunriseAndSunsetCard() -->
+                            <!-- position: relative; -->
+                            <li class="today__highlight__list__item sunrise-and-sunset">
+
                             </li>
     
-                            <li class="today__highlight__list__item humidity__card">
-    
-                            </li>
-    
-                            <li class="today__highlight__list__item pressure__card">
-    
-                            </li>
-    
-                            <li class="today__highlight__list__item visibility__card">
+                            <!-- position: relative; -->
+                            <li class="today__highlight__list__item humidity">
     
                             </li>
     
-                            <li class="today__highlight__list__item feels__like__card">
+                            <!-- position: relative; -->
+                            <li class="today__highlight__list__item pressure">
+    
+                            </li>
+    
+                            <!-- position: relative; -->
+                            <li class="today__highlight__list__item visibility">
+    
+                            </li>
+    
+                            <!-- position: relative; -->
+                            <li class="today__highlight__list__item feels__like">
     
                             </li>
     
@@ -122,40 +138,51 @@
                     <div class="hourly__forecast">
                         <h2 class="hourly__forecast__heading">Today at</h2>
                         <div class="horizontal__scroll__container">
+
+                            <!-- display: flex; -->
                             <ul class="temperature__list">
+                                <!-- display: flex; -->
                                 <li class="temperature__list__item temperature__card">
     
                                 </li>
     
+                                <!-- display: flex; -->
                                 <li class="temperature__list__item temperature__card">
     
                                 </li>
     
+                                <!-- display: flex; -->
                                 <li class="temperature__list__item temperature__card">
     
                                 </li>
     
+                                <!-- display: flex; -->
                                 <li class="temperature__list__item temperature__card">
     
                                 </li>
     
+                                <!-- display: flex; -->
                                 <li class="temperature__list__item temperature__card">
     
                                 </li>
     
+                                <!-- display: flex; -->
                                 <li class="temperature__list__item temperature__card">
     
                                 </li>
     
+                                <!-- display: flex; -->
                                 <li class="temperature__list__item temperature__card">
     
                                 </li>
     
+                                <!-- display: flex; -->
                                 <li class="temperature__list__item temperature__card">
     
                                 </li>
                             </ul>
         
+                            <!-- display: flex; -->
                             <ul class="wind__list">
                                 <li class="wind__list__item wind__card">
     
