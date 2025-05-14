@@ -218,7 +218,7 @@
 
     .ripple-effect:is(:focus, :focus-visible)::before {
         background: var(--white-alpha-8);
-        animation: ripple 250ms ease forwards;
+        /* animation: ripple 250ms ease forwards; */
     }
 }
 
