@@ -8,6 +8,7 @@ startOnConnection();
 
 const btnSearch = document.querySelector(".btn__search");
 btnSearch.addEventListener("click", () => {
+    alert("Click");
     const searchView = document.querySelector(".search__view");
     searchView.classList.add("mask-on");
 
