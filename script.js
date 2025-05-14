@@ -10,7 +10,7 @@ const btnSearch = document.querySelector(".btn__search");
 btnSearch.addEventListener("click", () => {
     const searchView = document.querySelector(".search__view");
     searchView.classList.add("mask-on");
-    alert(searchView);
+    alert(searchView.innerHTML);
 
     setTimeout(() => {
         searchField.focus();
