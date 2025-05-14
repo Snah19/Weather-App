@@ -201,7 +201,7 @@
 
         border-radius: inherit;
         clip-path: circle(100% at 50% 50%);
-        transition: 100ms ease;
+        /* transition: 100ms ease; */
     }
 
     .ripple-effect:hover {
@@ -336,7 +336,7 @@
         clip-path: circle(0% at 100% 0%);
         opacity: 0;
         visibility: hidden;
-        transition: 500ms ease;
+        /* transition: 500ms ease; */
 
         @media (width >= calc(768 / 16 * 1rem)) {
             all: unset;
@@ -350,7 +350,7 @@
             clip-path: circle(145% at 100% 0%);
             opacity: 1;
             visibility: visible;
-            transition: 500ms ease;
+            /* transition: 500ms ease; */
         }
     }    
 
